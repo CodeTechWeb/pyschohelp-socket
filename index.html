@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+      <script src="/socket.io/socket.io.js"></script>
+      <script>
+        let socket = io();
+        let el;
+  
+        socket.on('time', (timeString) => {
+          el = document.getElementById('server-time');
+          el.innerHTML = 'Server time: ' + timeString;
+        });
+        socket.on('join', (message) => {
+          el = document.getElementById('listeners');
+          el.innerHTML += `<span class="join">${new Date().toTimeString()} - ${message}</span><br/>`;
+        });
+        socket.on('disconnect', (message) => {
+          el = document.getElementById('listeners');
+          el.innerHTML += `<span class="exit">${new Date().toTimeString()} - ${message}</span><br/>`;
+        });
+      </script>
+    </head>
+    <body>
+      <p id="server-time"></p>
+      <h1>Activity</h1>
+      <div id="listeners">
+          
+      </div>
+    </body>
+  </html>
+  <style>
+      .join {
+          background-color: green;
+          color: white;
+      }
+      .exit {
+          background-color: lightcoral;
+      }
+  </style>
